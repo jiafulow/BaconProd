@@ -22,11 +22,11 @@ def setMet30(process,etaCut,isMiniAOD=True):
     process.pfMetPuppi30.src             = cms.InputTag('puppinolep30')
     process.pfJetMETcorrPuppi30          = process.pfJetMETcorrPuppi.clone(src = 'AK4PFJetsPuppi30')
     process.pfType1PuppiCorrectedMet30   = process.pfType1PuppiCorrectedMet.clone(src='pfMetPuppi30')
-    process.pfType1PuppiCorrectedMet30.srcType1Corrections = cms.VInputTag(cms.InputTag('pfJetMETcorrPuppi30', 'type1'))
+    process.pfType1PuppiCorrectedMet30.srcCorrections = cms.VInputTag(cms.InputTag('pfJetMETcorrPuppi30', 'type1'))
     process.ak4PFJets30                  = process.ak4PFJets.clone(src = cms.InputTag("packedPFCandidates30"))
     process.pfJetMETcorr30               = process.pfJetMETcorr.clone(src = 'ak4PFJets30')
     process.pfType1CorrectedMet30        = process.pfType1CorrectedMet.clone(src='pfMet30') 
-    process.pfType1CorrectedMet30.srcType1Corrections = cms.VInputTag(cms.InputTag('pfJetMETcorr30', 'type1'))
+    process.pfType1CorrectedMet30.srcCorrections = cms.VInputTag(cms.InputTag('pfJetMETcorr30', 'type1'))
     process.allMET30           = cms.Sequence(process.pfMet30*process.pfMetPuppi30*process.pfJetMETcorr30*process.pfJetMETcorrPuppi30*process.pfType1CorrectedMet30*process.pfType1PuppiCorrectedMet30 )
 
     #MVA Met 3.0

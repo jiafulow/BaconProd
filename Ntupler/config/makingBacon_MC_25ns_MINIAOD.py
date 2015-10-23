@@ -72,7 +72,6 @@ process.load("BaconProd/Ntupler/myPFMETCorrections_cff")
 process.pfJetMETcorr.jetCorrLabel = cms.InputTag("ak4PFL1FastL2L3Corrector")
 process.producePFMETCorrections = cms.Sequence(process.producePFMETCorrectionsMC)
 if is_data_flag:
-  process.pfJetMETcorr.jetCorrLabel = cms.InputTag("ak4PFL1FastL2L3ResidualCorrector")
   process.producePFMETCorrections = cms.Sequence(process.producePFMETCorrectionsData)
   process.AK4QGTaggerCHS.jec = cms.InputTag("ak4PFL1FastL2L3ResidualCorrector")
   process.CA8QGTaggerCHS.jec  = cms.InputTag("ca8PFCHSL1FastL2L3ResidualCorrector")
@@ -95,6 +94,7 @@ process.pfCandLep   = cms.EDFilter("CandPtrSelector", src = cms.InputTag("packed
 process.puppinolep = process.puppi.clone()
 process.puppinolep.candName = 'pfCandNoLep'
 process.load('RecoMET.METProducers.PFMET_cfi')
+process.pfMet.src = cms.InputTag('packedPFCandidates')
 process.puppiForMET = cms.EDProducer("CandViewMerger",src = cms.VInputTag( 'puppinolep','pfCandLep'))     
 process.pfMetPuppi = process.pfMet.clone();
 process.pfMetPuppi.src = cms.InputTag('puppiForMET')
@@ -102,7 +102,6 @@ process.pfMetPuppi.calculateSignificance = False
 process.pfJetMETcorrPuppi.jetCorrLabel = cms.InputTag("ak4PuppiL1FastL2L3Corrector")
 process.producePFMETCorrectionsPuppi = cms.Sequence(process.producePFMETCorrectionsPuppiMC)
 if is_data_flag:
-  process.pfJetMETcorrPuppi.jetCorrLabel = cms.InputTag("ak4PuppiL1FastL2L3ResidualCorrector")
   process.producePFMETCorrectionsPuppi   = cms.Sequence(process.producePFMETCorrectionsPuppiData)
   process.AK4QGTaggerPuppi.jec           = cms.InputTag("ak4PuppiL1FastL2L3ResidualCorrector")
 
@@ -474,6 +473,8 @@ process.baconSequence = cms.Sequence(process.photonIDValueMapProducer *
                                      process.ak4PFJets                *
                                      process.packedPFCandidates30     *
                                      process.ak4PFJets30              *
+                                     process.pfMet                    *
+                                     process.producePFMETCorrections  *
                                      process.egmGsfElectronIDSequence * 
                                      process.egmPhotonIDSequence      * 
                                      process.slimmedMuonsTight        * 
